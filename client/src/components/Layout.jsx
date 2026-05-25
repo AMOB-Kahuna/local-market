@@ -10,7 +10,7 @@ const Layout = () => {
         <h1 className='text-[#5C3317] font-[Abril_Fatface] font-bold text-2xl'>LocalMarket</h1>
       </header>
 
-      <main className='px-3 py-4 font-[Lato]'>
+      <main className='px-3 py-4 font-[Lato] text-[#1F1F1F]'>
         <Outlet />
       </main>
 

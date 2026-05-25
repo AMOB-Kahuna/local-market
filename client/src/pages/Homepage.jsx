@@ -1,6 +1,8 @@
 // import React from 'react'
 
+import { categories } from "../categories"
 import Button from "../components/Button"
+import Category from "../components/Category"
 
 const Homepage = () => {
 
@@ -8,7 +10,7 @@ const Homepage = () => {
   return (
     <>
       <section className="py-10 flex flex-col gap-15">
-        <h2 className="font-[Abril_Fatface] text-[#5C3317] text-3xl font-bold text-center text-shadow-lg">
+        <h2 className="font-[Abril_Fatface] text-[#1F1F1F] text-3xl font-bold text-center text-shadow-lg">
           Discover the heartbeat of your neighborhood
         </h2>
 
@@ -36,6 +38,16 @@ const Homepage = () => {
 
           <Button text="Search" onClick={() => {}} />
         </form>
+      </section>
+
+      <section className="py-10">
+        <h2 className="font-[Abril_Fatface] text-3xl font-bold">
+          Curated Categories
+        </h2>
+
+        <div className="pt-10 px-8 flex flex-col gap-5">
+          {categories.map( ({name, img}) => <Category id={name} name={name} img={img} />)}
+        </div>
       </section>
     </>
   )
