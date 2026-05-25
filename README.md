@@ -1,0 +1,2 @@
+# local-market
+LocalMarket is an online directory that helps Nigerians discover and connect with local artisans, tailors, bakers, photographers, furniture makers, and other small businesses. Sellers get a listing page; buyers can browse, search, and contact sellers. This project covers directory-style UIs, maps integration (Leaflet.js), and rating systems.
