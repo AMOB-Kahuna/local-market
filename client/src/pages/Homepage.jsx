@@ -1,6 +1,7 @@
 // import React from 'react'
 
 import { categories } from "../categories"
+import BusinessCard from "../components/BusinessCard"
 import Button from "../components/Button"
 import Category from "../components/Category"
 
@@ -48,6 +49,15 @@ const Homepage = () => {
         <div className="pt-10 px-8 flex flex-col gap-5">
           {categories.map( ({name, img}) => <Category id={name} name={name} img={img} />)}
         </div>
+      </section>
+
+      <section>
+        <h2 className="font-[Abril_Fatface] text-3xl font-bold">
+          Artisan Spotlight <br />
+          <p className="font-normal text-xl">Top-rated local business</p>
+        </h2>
+
+        <BusinessCard />
       </section>
     </>
   )
