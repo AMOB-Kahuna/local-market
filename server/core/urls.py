@@ -1,9 +1,16 @@
 from django.contrib import admin
 from django.urls import path
-from app.views import *
+from app.views import BusinessListCreateView, ReviewListCreateView, UserRegistrationView, UserLoginView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/businesses/', BusinessListCreateView.as_view(), name='businesses'),
     path('api/reviews/', ReviewListCreateView.as_view(), name='reviews'),
+    path('api/register/', UserRegistrationView.as_view(), name='register'),
+    path('api/login/', UserLoginView.as_view(), name='login'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

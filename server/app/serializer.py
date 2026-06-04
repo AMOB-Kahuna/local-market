@@ -1,5 +1,28 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from . models import *
+
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'password')
+    
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Email already registered.")
+        return value
+
+    def create(self, validated_data):
+        user = User(
+            username=validated_data['email'],
+            email=validated_data['email'],
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
+
 
 class ReviewSerializer(serializers.ModelSerializer):
     rating = serializers.DecimalField(max_digits=3, decimal_places=2)
@@ -26,6 +49,14 @@ class BusinessSerializer(serializers.ModelSerializer):
         model = Business
         fields = (
             'id', 'name', 'category', 'location', 'description',
-            'phone', 'email', 'owner', 'is_verified', 'lat', 'lng',
+            'detailed_description',
+            'phone', 'email',
+            'instagram_handle', 'twitter_handle', 'facebook_handle',
+            'whatsapp_number', 'image',
+            'owner', 'is_verified', 'lat', 'lng',
             'created_at', 'reviews'
         )
+
+class UserLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
