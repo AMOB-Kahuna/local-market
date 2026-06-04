@@ -47,7 +47,7 @@ const Homepage = () => {
         </h2>
 
         <div className="pt-10 px-8 flex flex-col gap-5">
-          {categories.map( ({name, img}) => <Category id={name} name={name} img={img} />)}
+          {categories.map( ({name, img}) => <Category key={name} id={name} name={name} img={img} />)}
         </div>
       </section>
 
