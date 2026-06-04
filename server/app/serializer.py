@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from . models import *
+from django.db.models import Avg
+from decimal import Decimal
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -44,6 +46,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 class BusinessSerializer(serializers.ModelSerializer):
     owner = serializers.StringRelatedField(read_only=True)
     reviews = ReviewSerializer(many=True, read_only=True)
+    average_rating = serializers.SerializerMethodField()
 
     class Meta:
         model = Business
@@ -54,8 +57,12 @@ class BusinessSerializer(serializers.ModelSerializer):
             'instagram_handle', 'twitter_handle', 'facebook_handle',
             'whatsapp_number', 'image',
             'owner', 'is_verified', 'lat', 'lng',
-            'created_at', 'reviews'
+            'created_at', 'average_rating', 'reviews'
         )
+
+    def get_average_rating(self, obj):
+        avg = obj.reviews.aggregate(avg=Avg('rating'))['avg']
+        return avg or Decimal('0.0')
 
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()

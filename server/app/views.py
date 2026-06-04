@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import authenticate, login
 from rest_framework import status
 from rest_framework.views import APIView
@@ -72,3 +72,11 @@ class UserLoginView(APIView):
             "email": user.email,
             "username": user.username,
         }, status=status.HTTP_200_OK)
+
+class BusinessDetailView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get(self, request, pk):
+        business = get_object_or_404(Business, pk=pk)
+        serializer = BusinessSerializer(business)
+        return Response(serializer.data)

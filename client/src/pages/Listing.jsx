@@ -28,17 +28,18 @@ const Listing = () => {
           name,
           category,
           location,
-          rating,
           description,
           status,
-          image
+          image,
+          average_rating,
         }) => {
           return (<List
             key={id}
+            id={id}
             name={name}
             category={category}
             location={location}
-            rating={rating}
+            rating={average_rating}
             description={description}
             status={status}
             image={image}

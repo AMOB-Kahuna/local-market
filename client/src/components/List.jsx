@@ -1,7 +1,9 @@
 // import React from 'react'
+import { Link } from 'react-router'
 import Rating from './Rating'
 
 const List = ({
+  id,
   name,
   category,
   location,
@@ -23,7 +25,10 @@ const List = ({
         <Rating rating={rating} />
         <p>{description}</p>
         <p className="text-[#2E7D32]">{status}</p>
-        <button className="w-full my-3 p-3 border border-[#F0A500] rounded-2xl text-[#F0A500]">View Profile</button>
+        <Link
+          className="block w-full my-3 p-3 border border-[#F0A500] rounded-2xl text-[#F0A500] text-center"
+          to={`/business/${id}`}
+        >View Profile</Link>
       </div>
     </div>
   )
