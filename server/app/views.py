@@ -61,7 +61,11 @@ class UserLoginView(APIView):
         email = serializer.validated_data['email']
         password = serializer.validated_data['password']
 
-        user = authenticate(username=email, password=password)
+        user_obj = User.objects.filter(email=email).first()
+        if user_obj is None:
+            return Response({"detail": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        user = authenticate(username=user_obj.username, password=password)
         if user is None:
             return Response({"detail": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED)
 

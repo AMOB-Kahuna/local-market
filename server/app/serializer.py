@@ -6,19 +6,25 @@ from decimal import Decimal
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
+    username = serializers.CharField()
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'password')
+        fields = ('id', 'username', 'email', 'password')
     
     def validate_email(self, value):
         if User.objects.filter(email=value).exists():
             raise serializers.ValidationError("Email already registered.")
         return value
+    
+    def validate_username(self, value):
+        if User.objects.filter(username=value).exists():
+            raise serializers.ValidationError("Username already taken.")
+        return value
 
     def create(self, validated_data):
         user = User(
-            username=validated_data['email'],
+            username=validated_data['username'],
             email=validated_data['email'],
         )
         user.set_password(validated_data['password'])

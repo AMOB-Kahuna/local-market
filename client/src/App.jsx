@@ -1,9 +1,11 @@
-import { Route, Routes } from "react-router"
+import { Route, Routes } from "react-router-dom"
 import Layout from "./components/Layout"
 import Homepage from "./pages/Homepage"
 import Listing from "./pages/Listing"
 import BusinessDetails from "./pages/BusinessDetails"
 import RegisterBusiness from "./pages/RegisterBusiness"
+import Signup from "./pages/Signup"
+import Login from "./pages/Login"
 
 
 function App() {
@@ -17,6 +19,8 @@ function App() {
       <Route path="business/:id" element={<BusinessDetails />} />
       <Route path="registerbusiness" element={<RegisterBusiness />} />
     </Route>
+    <Route path="/signup" element={<Signup />} />
+    <Route path="/login" element={<Login />} />
    </Routes>
   )
 }

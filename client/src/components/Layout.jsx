@@ -1,10 +1,19 @@
 // import React from 'react'
 import { useState } from 'react'
-import { NavLink, Outlet } from 'react-router'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 
 const Layout = () => {
 
   const [showNav, setShowNav] = useState(false)
+  const navigate = useNavigate()
+  const { user, logout } = useAuth()
+
+  const handleLogout = () => {
+    logout()
+    setShowNav(false)
+    navigate('/')
+  }
 
   return (
     <>
@@ -29,6 +38,19 @@ const Layout = () => {
             <button onClick={() => setShowNav(false)}>
               <NavLink to="/registerbusiness">Register Business</NavLink>
             </button>
+
+            {user ? (
+              <button onClick={handleLogout}>Logout</button>
+            ) : (
+              <>
+                <button onClick={() => setShowNav(false)}>
+                  <NavLink to="/login">Login</NavLink>
+                </button>
+                <button onClick={() => setShowNav(false)}>
+                  <NavLink to="/signup">Sign Up</NavLink>
+                </button>
+              </>
+            )}
           </nav>
         }
       </header>
