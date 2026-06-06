@@ -119,8 +119,25 @@ export const AuthProvider = ({ children }) => {
     setUser(null)
   }
 
+  const refreshAccessToken = async () => {
+    const refreshToken = localStorage.getItem('refreshToken')
+    if (!refreshToken) throw new Error('No refresh token')
+
+    const res = await fetch(`${API_BASE}/token/refresh/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refresh: refreshToken }),
+    })
+
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.detail || 'Token refresh failed')
+
+    localStorage.setItem('accessToken', data.access)
+    return data.access
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading, error, signup, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, error, signup, login, logout, refreshAccessToken }}>
       {children}
     </AuthContext.Provider>
   )

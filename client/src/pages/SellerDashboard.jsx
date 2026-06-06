@@ -44,7 +44,22 @@ const SellerDashboard = () => {
     fetchBusiness()
   }, [token])
 
-  if (loading) return <div className="flex items-center justify-center min-h-screen bg-gray-100">Loading...</div>
+  if (loading) {
+    return <div className="flex items-center justify-center min-h-screen bg-gray-100">Loading...</div>
+  }
+
+  if (!business) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+        <div className="bg-white p-8 rounded-3xl shadow-lg w-full max-w-4xl text-center">
+          <h1 className="font-[Abril_Fatface] text-3xl font-bold mb-4">Seller Dashboard</h1>
+          <p className="text-gray-700">
+            {error || 'You do not have a registered business yet. Register a business to see your dashboard.'}
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
