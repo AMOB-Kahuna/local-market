@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny, IsAuthenticated
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
 
 from .models import Business, Review
@@ -87,3 +87,26 @@ class BusinessDetailView(APIView):
         business = get_object_or_404(Business, pk=pk)
         serializer = BusinessSerializer(business)
         return Response(serializer.data)
+
+class MyBusinessView(APIView):
+    permission_classes = [IsAuthenticated]
+    parser_classes = [FormParser, MultiPartParser, JSONParser]
+
+    def get(self, request):
+        business = Business.objects.filter(owner=request.user).first()
+        if not business:
+            return Response({"detail": "No business found"}, status=404)
+        serializer = BusinessSerializer(business)
+        return Response(serializer.data)
+
+    def put(self, request):
+        business = Business.objects.filter(owner=request.user).first()
+        if not business:
+            return Response({"detail": "No business found"}, status=404)
+        serializer = BusinessSerializer(business, data=request.data, partial=True, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+
+    patch = put

@@ -40,7 +40,12 @@ const Layout = () => {
             </button>
 
             {user ? (
-              <button onClick={handleLogout}>Logout</button>
+              <>
+                <button onClick={() => setShowNav(false)}>
+                    <NavLink to="/mybusiness">Dashboard</NavLink>
+                  </button>
+                <button onClick={handleLogout}>Logout</button>
+              </>
             ) : (
               <>
                 <button onClick={() => setShowNav(false)}>

@@ -6,6 +6,7 @@ import BusinessDetails from "./pages/BusinessDetails"
 import RegisterBusiness from "./pages/RegisterBusiness"
 import Signup from "./pages/Signup"
 import Login from "./pages/Login"
+import SellerDashboard from "./pages/SellerDashboard"
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
       <Route path="listings" element={<Listing />} />
       <Route path="business/:id" element={<BusinessDetails />} />
       <Route path="registerbusiness" element={<RegisterBusiness />} />
+      <Route path="mybusiness" element={<SellerDashboard />} />
     </Route>
     <Route path="/signup" element={<Signup />} />
     <Route path="/login" element={<Login />} />
