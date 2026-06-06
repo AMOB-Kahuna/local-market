@@ -17,53 +17,51 @@ const Layout = () => {
 
   return (
     <>
-      <header className='px-3 py-4 border-b border-b-[#F0A500] flex justify-between items-center'>
+      <header className='px-3 py-4 border-b border-b-[#F0A500] flex justify-between items-center lg:px-10'>
         <h1 className='text-[#5C3317] font-[Abril_Fatface] font-bold text-2xl'>LocalMarket</h1>
 
         <button
-          className='w-10'
+          className='w-10 sm:hidden'
           onClick={() => setShowNav(prev => !prev)}
         >
           <img src="/menu.png" alt="" className='w-full' />
         </button>
         
-        {showNav &&
-          <nav className='absolute top-0 right-0 mt-20 bg-[#FFFDF5] py-5 px-10 text-xl flex flex-col gap-5 shadow-md'>
-            <button onClick={() => setShowNav(false)}>
-              <NavLink to="/">Home</NavLink>
-            </button>
-            <button onClick={() => setShowNav(false)}>
-              <NavLink to="/listings">Listings</NavLink>
-            </button>
+        <nav className={`${showNav ? 'absolute top-0 right-0 mt-20 bg-[#FFFDF5] py-5 px-10  flex-col gap-5 shadow-md' : ''} text-xl flex gap-5`}>
+          <button onClick={() => setShowNav(false)}>
+            <NavLink to="/">Home</NavLink>
+          </button>
+          <button onClick={() => setShowNav(false)}>
+            <NavLink to="/listings">Listings</NavLink>
+          </button>
 
-            {user && !user.has_business && (
+          {user && !user.has_business && (
+            <button onClick={() => setShowNav(false)}>
+              <NavLink to="/registerbusiness">Register Business</NavLink>
+            </button>
+          )}
+
+          {user ? (
+            <>
               <button onClick={() => setShowNav(false)}>
-                <NavLink to="/registerbusiness">Register Business</NavLink>
+                  <NavLink to="/mybusiness">Dashboard</NavLink>
+                </button>
+              <button className='cursor-pointer' onClick={handleLogout}>Logout</button>
+            </>
+          ) : (
+            <>
+              <button onClick={() => setShowNav(false)}>
+                <NavLink to="/login">Login</NavLink>
               </button>
-            )}
-
-            {user ? (
-              <>
-                <button onClick={() => setShowNav(false)}>
-                    <NavLink to="/mybusiness">Dashboard</NavLink>
-                  </button>
-                <button onClick={handleLogout}>Logout</button>
-              </>
-            ) : (
-              <>
-                <button onClick={() => setShowNav(false)}>
-                  <NavLink to="/login">Login</NavLink>
-                </button>
-                <button onClick={() => setShowNav(false)}>
-                  <NavLink to="/signup">Sign Up</NavLink>
-                </button>
-              </>
-            )}
-          </nav>
-        }
+              <button onClick={() => setShowNav(false)}>
+                <NavLink to="/signup">Sign Up</NavLink>
+              </button>
+            </>
+          )}
+        </nav>
       </header>
 
-      <main className='px-3 py-4 font-[Lato] text-[#1F1F1F]'>
+      <main className='px-3 py-4 font-[Lato] text-[#1F1F1F] lg:px-20'>
         <Outlet />
       </main>
 

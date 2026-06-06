@@ -12,8 +12,8 @@ const BusinessDetails = () => {
   const [formSuccess, setFormSuccess] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const currentUser = JSON.parse(localStorage.getItem('user') || 'null')
-  console.log(business)
-  console.log(currentUser)
+  // console.log(business)
+  // console.log(currentUser)
 
   const fetchBusiness = async () => {
     setLoading(true)
@@ -22,7 +22,7 @@ const BusinessDetails = () => {
       const data = await res.json()
       setBusiness(data)
     } catch (error) {
-      console.log(error)
+      console.error(error)
     } finally {
       setLoading(false)
     }

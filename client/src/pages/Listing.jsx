@@ -13,7 +13,7 @@ const Listing = () => {
         const data = await res.json();
         setBusinesses(data);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
 
@@ -56,7 +56,7 @@ const Listing = () => {
         ))}
       </div>
 
-      <div className='flex flex-col gap-8'>
+      <div className='grid gap-8 md:grid-cols-2 lg:grid-cols-3'>
         {filteredBusinesses.map(({
           id,
           name,

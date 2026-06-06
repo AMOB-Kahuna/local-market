@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Button from './Button'
 
 const BusinessProfileForm = ({ business, onSaved }) => {
@@ -7,6 +7,15 @@ const BusinessProfileForm = ({ business, onSaved }) => {
   const [message, setMessage] = useState(null)
   const token = localStorage.getItem('accessToken')
 
+  useEffect(() => {
+    if (!message) return
+
+    const timeoutId = setTimeout(() => {
+      setMessage(null)
+    }, 2000)
+
+    return () => clearTimeout(timeoutId)
+  }, [message])
 
   const handleChange = (e) => {
     const { name, value, files } = e.target
@@ -47,7 +56,7 @@ const BusinessProfileForm = ({ business, onSaved }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-6">
+    <form onSubmit={handleSubmit} encType="multipart/form-data" className="">
       {message && (
         <div className={`${message.type === 'error' ? 'bg-red-100 border-red-400 text-red-700' : 'bg-green-100 border-green-400 text-green-700'} border px-4 py-3 rounded`}>
           {message.text}
@@ -109,10 +118,10 @@ const BusinessProfileForm = ({ business, onSaved }) => {
         {form.image && typeof form.image === 'string' && (
           <img src={form.image} alt="business" className="w-40 h-28 object-cover rounded mb-2" />
         )}
-        <input type="file" name="image" onChange={handleChange} />
+        <input type="file" name="image" className='w-full border border-gray-300 px-3 py-2 cursor-pointer' onChange={handleChange} />
       </div>
 
-      <div className="flex justify-end">
+      <div className="flex justify-end mt-5">
         <Button text={saving ? 'Saving...' : 'Save Profile'} onClick={() => {}} />
       </div>
     </form>

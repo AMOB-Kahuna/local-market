@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  console.log(user)
+  // console.log(user)
 
   const API_BASE = 'http://127.0.0.1:8000/api'
 

@@ -34,7 +34,7 @@ const SellerDashboard = () => {
           setBusiness(await res.json())
         }
       } catch (err) {
-        console.log(err)
+        // console.error(err)
         setError('Network error while fetching business.')
       } finally {
         setLoading(false)
@@ -62,8 +62,8 @@ const SellerDashboard = () => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="bg-white p-8 rounded-3xl shadow-lg w-full max-w-4xl">
+    <div className="flex items-center justify-center min-h-screen md:min-h-fit p-4">
+      <div className="bg-white p-4 rounded-3xl shadow-lg w-full max-w-4xl lg:max-w-5xl">
         <h1 className="font-[Abril_Fatface] text-3xl font-bold text-center mb-6">Seller Dashboard</h1>
 
         {error && (

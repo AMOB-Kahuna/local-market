@@ -75,7 +75,7 @@ const Homepage = () => {
           Discover the heartbeat of your neighborhood
         </h2>
 
-        <form onSubmit={handleSearch} className="flex flex-col items-center gap-4 p-10 shadow-lg rounded-lg bg-[#ffffff]">
+        <form onSubmit={handleSearch} className="flex flex-col items-center gap-4 p-10 shadow-lg rounded-lg bg-[#ffffff] mx-auto sm:flex-row max-w-3xl">
           <input
             type="text"
             className="w-full h-13 p-2 text-xl border border-black/20 rounded-lg"
@@ -106,7 +106,7 @@ const Homepage = () => {
           </h2>
 
           {searchResults.length > 0 ? (
-            <div className="grid gap-6 mt-8 md:grid-cols-3">
+            <div className="grid gap-6 mt-8 md:grid-cols-2">
               {searchResults.map((business) => (
                 <BusinessCard key={business.id} business={business} />
               ))}
@@ -124,7 +124,7 @@ const Homepage = () => {
               Curated Categories
             </h2>
 
-            <div className="pt-10 px-8 flex flex-col gap-5">
+            <div className="pt-10 px-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {categories.map( ({name, img}) => <Category key={name} id={name} name={name} img={img} />)}
             </div>
           </section>
@@ -135,7 +135,7 @@ const Homepage = () => {
               <p className="font-normal text-xl">Top-rated local businesses</p>
             </h2>
 
-            <div className="grid gap-6 mt-8 md:grid-cols-3">
+            <div className="grid gap-6 mt-8 md:grid-cols-2 lg:grid-cols-3">
               {topBusinesses.map((business) => (
                 <BusinessCard key={business.id} business={business} />
               ))}

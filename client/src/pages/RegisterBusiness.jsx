@@ -82,8 +82,8 @@ const RegisterBusiness = () => {
       })
 
       const data = await response.json()
-      console.log('Response Status:', response.status)
-      console.log('Response Data:', data)
+      // console.log('Response Status:', response.status)
+      // console.log('Response Data:', data)
 
       if (!response.ok) {
         const message =
