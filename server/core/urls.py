@@ -1,8 +1,9 @@
 from django.contrib import admin
 from django.urls import path
-from app.views import BusinessListCreateView, ReviewListCreateView, UserRegistrationView, UserLoginView, BusinessDetailView
+from app.views import BusinessListCreateView, ReviewListCreateView, UserRegistrationView, UserLoginView, BusinessDetailView, EmailTokenObtainPairView
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -11,6 +12,8 @@ urlpatterns = [
     path('api/reviews/', ReviewListCreateView.as_view(), name='reviews'),
     path('api/register/', UserRegistrationView.as_view(), name='register'),
     path('api/login/', UserLoginView.as_view(), name='login'),
+    path('api/token/', EmailTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
 if settings.DEBUG:

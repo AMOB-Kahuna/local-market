@@ -3,6 +3,11 @@ from rest_framework import serializers
 from . models import *
 from django.db.models import Avg
 from decimal import Decimal
+from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+User = get_user_model()
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -73,3 +78,24 @@ class BusinessSerializer(serializers.ModelSerializer):
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
+
+class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        # Support clients posting either { "email": "...", "password": "..." }
+        # or { "username": "<email>", "password": "..." } (common in the client).
+        email = attrs.get('email')
+        username_field = attrs.get('username')
+
+        # If username is provided but looks like an email, treat it as email.
+        if not email and username_field and '@' in username_field:
+            email = username_field
+
+        if email:
+            try:
+                user = User.objects.get(email=email)
+                attrs['username'] = user.username
+            except User.DoesNotExist:
+                # leave attrs unchanged so super() will return proper auth failure
+                pass
+
+        return super().validate(attrs)

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Button from "../components/Button"
 
 const RegisterBusiness = () => {
@@ -15,6 +15,26 @@ const RegisterBusiness = () => {
     whatsapp_number: '',
     detailed_description: ''
   })
+  const [submitError, setSubmitError] = useState('')
+  const [submitSuccess, setSubmitSuccess] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+
+  // Add this useEffect to fetch the CSRF token on mount
+  useEffect(() => {
+    const fetchCSRFToken = async () => {
+      try {
+        await fetch('http://127.0.0.1:8000/api/businesses/', {
+          method: 'GET',
+          credentials: 'include',
+        })
+        // This GET request triggers Django to set the csrftoken cookie
+      } catch (err) {
+        console.error('Failed to fetch CSRF token:', err)
+      }
+    }
+    
+    fetchCSRFToken()
+  }, [])
 
   const handleChange = (e) => {
     const { id, value, name } = e.target
@@ -25,10 +45,78 @@ const RegisterBusiness = () => {
     }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(formData)
-    // Send to backend here
+    setSubmitError('')
+    setSubmitSuccess('')
+    setSubmitting(true)
+
+    const requiredFields = [
+      'name',
+      'category',
+      'location',
+      'description',
+      'phone',
+      'email',
+      'detailed_description'
+    ]
+
+    const missingField = requiredFields.find(field => !formData[field]?.trim())
+    if (missingField) {
+      setSubmitError('Please fill out all required fields.')
+      setSubmitting(false)
+      return
+    }
+
+    const token = localStorage.getItem('accessToken')
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/businesses/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+      console.log('Response Status:', response.status)
+      console.log('Response Data:', data)
+
+      if (!response.ok) {
+        const message =
+          data.detail ||
+          Object.values(data).flat().join(' ') ||
+          'Failed to register business'
+        throw new Error(message)
+      }
+
+      setSubmitSuccess('Business registered successfully.')
+      setFormData({
+        name: '',
+        category: '',
+        location: '',
+        description: '',
+        phone: '',
+        email: '',
+        twitter_handle: '',
+        instagram_handle: '',
+        facebook_handle: '',
+        whatsapp_number: '',
+        detailed_description: '',
+      })
+    } catch (err) {
+      setSubmitError(err.message)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  function getCookie(name) {
+    const match = document.cookie.match(new RegExp('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)'));
+    return match ? decodeURIComponent(match[2]) : null;
   }
 
   return (
@@ -50,6 +138,7 @@ const RegisterBusiness = () => {
                 <input
                   type="text"
                   id="name"
+                  required
                   className="border border-gray-300 px-3 py-2 rounded"
                   value={formData.name}
                   onChange={handleChange}
@@ -62,6 +151,7 @@ const RegisterBusiness = () => {
                 </label>
                 <select
                   id="category"
+                  required
                   className="border border-gray-300 px-3 py-2 rounded"
                   value={formData.category}
                   onChange={handleChange}
@@ -85,6 +175,7 @@ const RegisterBusiness = () => {
                 <input
                   type="text"
                   id="location"
+                  required
                   className="border border-gray-300 px-3 py-2 rounded"
                   value={formData.location}
                   onChange={handleChange}
@@ -98,6 +189,7 @@ const RegisterBusiness = () => {
                 <input
                   type="text"
                   id="description"
+                  required
                   className="border border-gray-300 px-3 py-2 rounded"
                   value={formData.description}
                   onChange={handleChange}
@@ -111,6 +203,7 @@ const RegisterBusiness = () => {
                 <input
                   type="text"
                   id="phone"
+                  required
                   className="border border-gray-300 px-3 py-2 rounded"
                   value={formData.phone}
                   onChange={handleChange}
@@ -124,6 +217,7 @@ const RegisterBusiness = () => {
                 <input
                   type="email"
                   id="email"
+                  required
                   className="border border-gray-300 px-3 py-2 rounded"
                   value={formData.email}
                   onChange={handleChange}
@@ -196,6 +290,7 @@ const RegisterBusiness = () => {
             </label>
             <textarea
               id="detailed_description"
+              required
               className="border border-gray-300 px-3 py-2 rounded min-h-[140px]"
               value={formData.detailed_description}
               onChange={handleChange}
@@ -206,6 +301,18 @@ const RegisterBusiness = () => {
             <Button text="Register Business" onClick={handleSubmit} />
           </div>
         </form>
+
+        {submitError && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            {submitError}
+          </div>
+        )}
+
+        {submitSuccess && (
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            {submitSuccess}
+          </div>
+        )}
       </div>
     </div>
   )
