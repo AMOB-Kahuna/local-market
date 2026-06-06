@@ -35,9 +35,12 @@ const Layout = () => {
             <button onClick={() => setShowNav(false)}>
               <NavLink to="/listings">Listings</NavLink>
             </button>
-            <button onClick={() => setShowNav(false)}>
-              <NavLink to="/registerbusiness">Register Business</NavLink>
-            </button>
+
+            {user && !user.has_business && (
+              <button onClick={() => setShowNav(false)}>
+                <NavLink to="/registerbusiness">Register Business</NavLink>
+              </button>
+            )}
 
             {user ? (
               <>

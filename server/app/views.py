@@ -76,10 +76,13 @@ class UserLoginView(APIView):
 
         login(request, user)
 
+        has_business = Business.objects.filter(owner=user).exists()
+
         return Response({
             "id": user.id,
             "email": user.email,
             "username": user.username,
+            "has_business": has_business,  # Add this
         }, status=status.HTTP_200_OK)
 
 class BusinessDetailView(APIView):

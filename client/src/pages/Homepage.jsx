@@ -6,7 +6,27 @@ import Category from "../components/Category"
 
 const Homepage = () => {
   const [topBusinesses, setTopBusinesses] = useState([])
+  const [searchKeyword, setSearchKeyword] = useState('')
+  const [searchResults, setSearchResults] = useState([])
+  const [isSearching, setIsSearching] = useState(false)
+  const [allBusinesses, setAllBusinesses] = useState([])
 
+  // Fetch all businesses on mount
+  useEffect(() => {
+    const loadAllBusinesses = async () => {
+      try {
+        const res = await fetch('http://127.0.0.1:8000/api/businesses/')
+        const data = await res.json()
+        setAllBusinesses(data)
+      } catch (error) {
+        console.error('Failed to load businesses', error)
+      }
+    }
+
+    loadAllBusinesses()
+  }, [])
+
+  // Load top-rated businesses
   useEffect(() => {
     const loadTopBusinesses = async () => {
       try {
@@ -21,6 +41,33 @@ const Homepage = () => {
     loadTopBusinesses()
   }, [])
 
+  // Search logic
+  const handleSearch = (e) => {
+    e.preventDefault()
+    
+    if (!searchKeyword.trim()) {
+      setIsSearching(false)
+      setSearchResults([])
+      return
+    }
+
+    const keyword = searchKeyword.toLowerCase()
+    const results = allBusinesses.filter(business => 
+      business.name.toLowerCase().includes(keyword) ||
+      business.category.toLowerCase().includes(keyword)
+    )
+
+    setSearchResults(results)
+    setIsSearching(true)
+  }
+
+  // Clear search
+  const handleClearSearch = () => {
+    setSearchKeyword('')
+    setSearchResults([])
+    setIsSearching(false)
+  }
+
   return (
     <>
       <section className="py-10 flex flex-col gap-15">
@@ -28,54 +75,74 @@ const Homepage = () => {
           Discover the heartbeat of your neighborhood
         </h2>
 
-        <form action="" className="flex flex-col items-center gap-4 p-10 shadow-lg rounded-lg bg-[#ffffff]">
+        <form onSubmit={handleSearch} className="flex flex-col items-center gap-4 p-10 shadow-lg rounded-lg bg-[#ffffff]">
           <input
             type="text"
             className="w-full h-13 p-2 text-xl border border-black/20 rounded-lg"
             placeholder="Enter keyword..."
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value)}
           />
 
-          <div className="text-xl w-full flex items-center">
-            <label htmlFor="filter" className="font-bold mr-2">Filter:</label>
-            <select name="" id="filter" className="w-full border border-black/20 p-2 rounded-lg text-center">
-              <option value="all">all</option>
-              <option value="all">Tailoring</option>
-              <option value="all">Baking</option>
-              <option value="all">Photography</option>
-              <option value="all">Furniture</option>
-              <option value="all">Beauty</option>
-              <option value="all">Tech Repair</option>
-              <option value="all">Catering</option>
-              <option value="all">Art</option>
-            </select>
+          <div className="flex gap-3">
+            <Button text="Search" onClick={handleSearch} />
+            {isSearching && (
+              <button
+                type="button"
+                onClick={handleClearSearch}
+                className="px-6 py-2 bg-gray-400 text-white rounded-lg"
+              >
+                Clear
+              </button>
+            )}
           </div>
-
-          <Button text="Search" onClick={() => {}} />
         </form>
       </section>
 
-      <section className="py-10">
-        <h2 className="font-[Abril_Fatface] text-3xl font-bold">
-          Curated Categories
-        </h2>
+      {isSearching && (
+        <section className="py-10">
+          <h2 className="font-[Abril_Fatface] text-3xl font-bold">
+            Search Results ({searchResults.length})
+          </h2>
 
-        <div className="pt-10 px-8 flex flex-col gap-5">
-          {categories.map( ({name, img}) => <Category key={name} id={name} name={name} img={img} />)}
-        </div>
-      </section>
+          {searchResults.length > 0 ? (
+            <div className="grid gap-6 mt-8 md:grid-cols-3">
+              {searchResults.map((business) => (
+                <BusinessCard key={business.id} business={business} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-600 mt-4">No businesses found matching "{searchKeyword}"</p>
+          )}
+        </section>
+      )}
 
-      <section className="mt-10">
-        <h2 className="font-[Abril_Fatface] text-3xl font-bold">
-          Artisan Spotlight <br />
-          <p className="font-normal text-xl">Top-rated local businesses</p>
-        </h2>
+      {!isSearching && (
+        <>
+          <section className="py-10">
+            <h2 className="font-[Abril_Fatface] text-3xl font-bold">
+              Curated Categories
+            </h2>
 
-        <div className="grid gap-6 mt-8 md:grid-cols-3">
-          {topBusinesses.map((business) => (
-            <BusinessCard key={business.id} business={business} />
-          ))}
-        </div>
-      </section>
+            <div className="pt-10 px-8 flex flex-col gap-5">
+              {categories.map( ({name, img}) => <Category key={name} id={name} name={name} img={img} />)}
+            </div>
+          </section>
+
+          <section className="mt-10">
+            <h2 className="font-[Abril_Fatface] text-3xl font-bold">
+              Artisan Spotlight <br />
+              <p className="font-normal text-xl">Top-rated local businesses</p>
+            </h2>
+
+            <div className="grid gap-6 mt-8 md:grid-cols-3">
+              {topBusinesses.map((business) => (
+                <BusinessCard key={business.id} business={business} />
+              ))}
+            </div>
+          </section>
+        </>
+      )}
     </>
   )
 }
