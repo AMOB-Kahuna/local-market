@@ -5,6 +5,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny, IsAuthenticated
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
+from django.db.models import Avg, Value, DecimalField
+from django.db.models.functions import Coalesce
 
 from .models import Business, Review
 from .serializer import *
@@ -110,3 +112,18 @@ class MyBusinessView(APIView):
         return Response(serializer.errors, status=400)
 
     patch = put
+
+class TopRatedBusinessListView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        businesses = Business.objects.annotate(
+            avg_rating=Coalesce(
+                Avg('reviews__rating'),
+                Value(0, output_field=DecimalField()),
+                output_field=DecimalField(),
+            )
+        ).order_by('-avg_rating')[:3]
+
+        serializer = BusinessSerializer(businesses, many=True)
+        return Response(serializer.data)

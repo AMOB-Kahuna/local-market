@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from app.views import BusinessListCreateView, ReviewListCreateView, UserRegistrationView, UserLoginView, BusinessDetailView, EmailTokenObtainPairView, MyBusinessView
+from app.views import BusinessListCreateView, ReviewListCreateView, UserRegistrationView, UserLoginView, BusinessDetailView, EmailTokenObtainPairView, MyBusinessView, TopRatedBusinessListView
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenRefreshView
@@ -15,6 +15,7 @@ urlpatterns = [
     path('api/token/', EmailTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/my-business/', MyBusinessView.as_view(), name='my-business'),
+    path('api/businesses/top-rated/', TopRatedBusinessListView.as_view(), name='top-rated-businesses'),
 ]
 
 if settings.DEBUG:

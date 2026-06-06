@@ -1,12 +1,25 @@
-// import React from 'react'
-
+import { useEffect, useState } from 'react'
 import { categories } from "../categories"
 import BusinessCard from "../components/BusinessCard"
 import Button from "../components/Button"
 import Category from "../components/Category"
 
 const Homepage = () => {
+  const [topBusinesses, setTopBusinesses] = useState([])
 
+  useEffect(() => {
+    const loadTopBusinesses = async () => {
+      try {
+        const res = await fetch('http://127.0.0.1:8000/api/businesses/top-rated/')
+        const data = await res.json()
+        setTopBusinesses(data)
+      } catch (error) {
+        console.error('Failed to load top businesses', error)
+      }
+    }
+
+    loadTopBusinesses()
+  }, [])
 
   return (
     <>
@@ -51,13 +64,17 @@ const Homepage = () => {
         </div>
       </section>
 
-      <section>
+      <section className="mt-10">
         <h2 className="font-[Abril_Fatface] text-3xl font-bold">
           Artisan Spotlight <br />
-          <p className="font-normal text-xl">Top-rated local business</p>
+          <p className="font-normal text-xl">Top-rated local businesses</p>
         </h2>
 
-        <BusinessCard />
+        <div className="grid gap-6 mt-8 md:grid-cols-3">
+          {topBusinesses.map((business) => (
+            <BusinessCard key={business.id} business={business} />
+          ))}
+        </div>
       </section>
     </>
   )
