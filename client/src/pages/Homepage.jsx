@@ -71,8 +71,8 @@ const Homepage = () => {
   return (
     <>
       <section className="py-10 flex flex-col gap-15">
-        <h2 className="font-[Abril_Fatface] text-[#1F1F1F] text-3xl font-bold text-center text-shadow-lg">
-          Discover the heartbeat of your neighborhood
+        <h2 className="font-[Abril_Fatface] text-[#5C3317] text-3xl font-bold text-center text-shadow-lg">
+          Discover the heartbeat of Bagadaje Community
         </h2>
 
         <form onSubmit={handleSearch} className="flex flex-col items-center gap-4 p-10 shadow-lg rounded-lg bg-[#ffffff] mx-auto sm:flex-row max-w-3xl">

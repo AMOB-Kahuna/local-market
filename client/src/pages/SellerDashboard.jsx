@@ -7,6 +7,7 @@ const SellerDashboard = () => {
   const [error, setError] = useState(null)
   const token = localStorage.getItem('accessToken')
 
+
   useEffect(() => {
     const fetchBusiness = async () => {
       if (!token) {
@@ -62,38 +63,41 @@ const SellerDashboard = () => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen md:min-h-fit p-4">
-      <div className="bg-white p-4 rounded-3xl shadow-lg w-full max-w-4xl lg:max-w-5xl">
-        <h1 className="font-[Abril_Fatface] text-3xl font-bold text-center mb-6">Seller Dashboard</h1>
+    <>
+      <h2 className='text-3xl font-[Abril_Fatface]'>Welcome back <span className='font-bold'>{business.owner}!</span></h2>
+      <div className="flex items-center justify-center min-h-screen md:min-h-fit p-4">
+        <div className="bg-white p-4 rounded-3xl shadow-lg w-full max-w-4xl lg:max-w-5xl">
+          <h1 className="font-[Abril_Fatface] text-3xl font-bold text-center mb-6">Seller Dashboard</h1>
 
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-            {error}
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+              {error}
+            </div>
+          )}
+
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="md:col-span-2">
+              <BusinessProfileForm business={business} onSaved={setBusiness} />
+            </div>
+
+            <aside className="bg-gray-50 border border-gray-200 p-4 rounded-2xl">
+              <h2 className="text-lg font-semibold mb-3">Business Info</h2>
+              {business ? (
+                <div className="space-y-2 text-sm text-gray-700">
+                  <div><strong>Name:</strong> {business.name}</div>
+                  <div><strong>Category:</strong> {business.category}</div>
+                  <div><strong>Location:</strong> {business.location}</div>
+                  <div><strong>Phone:</strong> {business.phone}</div>
+                  <div><strong>Email:</strong> {business.email}</div>
+                </div>
+              ) : (
+                <div className="text-sm text-gray-600">No business loaded.</div>
+              )}
+            </aside>
           </div>
-        )}
-
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="md:col-span-2">
-            <BusinessProfileForm business={business} onSaved={setBusiness} />
-          </div>
-
-          <aside className="bg-gray-50 border border-gray-200 p-4 rounded-2xl">
-            <h2 className="text-lg font-semibold mb-3">Business Info</h2>
-            {business ? (
-              <div className="space-y-2 text-sm text-gray-700">
-                <div><strong>Name:</strong> {business.name}</div>
-                <div><strong>Category:</strong> {business.category}</div>
-                <div><strong>Location:</strong> {business.location}</div>
-                <div><strong>Phone:</strong> {business.phone}</div>
-                <div><strong>Email:</strong> {business.email}</div>
-              </div>
-            ) : (
-              <div className="text-sm text-gray-600">No business loaded.</div>
-            )}
-          </aside>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

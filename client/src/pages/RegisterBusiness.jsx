@@ -114,11 +114,6 @@ const RegisterBusiness = () => {
     }
   }
 
-  function getCookie(name) {
-    const match = document.cookie.match(new RegExp('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)'));
-    return match ? decodeURIComponent(match[2]) : null;
-  }
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-3xl shadow-lg w-full max-w-4xl">

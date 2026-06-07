@@ -43,7 +43,7 @@ const Signup = () => {
 
     try {
       await signup(formData.username, formData.email, formData.password)
-      alert('Signup successful! Please login.')
+      // alert('Signup successful! Please login.')
       navigate('/login')
     } catch (err) {
       console.log(err)

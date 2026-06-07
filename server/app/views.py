@@ -17,11 +17,11 @@ class BusinessListCreateView(APIView):
 
     def get(self, request):
         businesses = Business.objects.all()
-        serializer = BusinessSerializer(businesses, many=True)
+        serializer = BusinessSerializer(businesses, many=True, context={'request': request})
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = BusinessSerializer(data=request.data)
+        serializer = BusinessSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save(owner=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -87,10 +87,9 @@ class UserLoginView(APIView):
 
 class BusinessDetailView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
-
     def get(self, request, pk):
         business = get_object_or_404(Business, pk=pk)
-        serializer = BusinessSerializer(business)
+        serializer = BusinessSerializer(business, context={'request': request})
         return Response(serializer.data)
 
 class MyBusinessView(APIView):
@@ -101,7 +100,7 @@ class MyBusinessView(APIView):
         business = Business.objects.filter(owner=request.user).first()
         if not business:
             return Response({"detail": "No business found"}, status=404)
-        serializer = BusinessSerializer(business)
+        serializer = BusinessSerializer(business, context={'request': request})
         return Response(serializer.data)
 
     def put(self, request):
@@ -128,5 +127,5 @@ class TopRatedBusinessListView(APIView):
             )
         ).order_by('-avg_rating')[:3]
 
-        serializer = BusinessSerializer(businesses, many=True)
+        serializer = BusinessSerializer(businesses, many=True, context={'request': request})
         return Response(serializer.data)

@@ -7,7 +7,7 @@ const BusinessCard = ({ business }) => {
   return (
     <div className="flex flex-col items-center gap-5 mx-5 bg-white shadow-md rounded-2xl overflow-hidden">
       <img
-        src={business.image || '/pottery.jpg'}
+        src={business.image || '/placeholder.png'}
         alt={business.name}
         className="w-full h-56 object-cover"
       />
@@ -22,7 +22,7 @@ const BusinessCard = ({ business }) => {
         <p className="text-[#2E7D32] mt-4">Status</p>
       </div>
       <Link
-        className="block mt-3 mb-5 py-3 px-10 border border-[#F0A500] rounded-2xl text-[#F0A500] text-center"
+        className="block mt-3 mb-5 py-3 px-10 border border-[#F0A500] rounded-2xl text-[#F0A500] font-bold text-center hover:bg-[#F0A500] hover:text-[#FFFDF5] transition-colors duration-600 ease-in-out"
         to={`/business/${business.id}`}
       >View Profile</Link>
     </div>

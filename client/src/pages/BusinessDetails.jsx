@@ -100,7 +100,7 @@ const BusinessDetails = () => {
       {business ? (
         <div className="max-w-6xl mx-auto px-5 py-10">
           <section>
-            <img src="/pottery.jpg" alt="" className="w-full h-80 object-cover rounded-3xl" />
+            <img src={business.image || "/placeholder.png"} alt="" className="w-full h-80 object-cover rounded-3xl" />
 
             <div className="mt-8 text-center">
               <h2 className="font-[Abril_Fatface] text-4xl font-bold">{business.name}</h2>

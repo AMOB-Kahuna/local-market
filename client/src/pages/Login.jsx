@@ -1,16 +1,20 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import Button from "../components/Button"
 
 const Login = () => {
-  const navigate = useNavigate();
-  const { login, loading, error: authError } = useAuth();
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { login, loading, error: authError } = useAuth()
+  const from = location.state?.from?.pathname || '/'
+
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   })
   const [error, setError] = useState('')
+  const navigateTo = (path) => navigate(path, { replace: true })
 
   const handleChange = (e) => {
     const { id, value } = e.target
@@ -31,13 +35,13 @@ const Login = () => {
 
     try {
       await login(formData.email, formData.password)
-      alert('Login successful!')
-      navigate('/')
+      navigateTo(from)
     } catch (err) {
       console.log(err)
       setError(authError || 'Login failed. Please try again.')
     }
   }
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
