@@ -19,7 +19,7 @@ const SellerDashboard = () => {
       }
 
       try {
-        const res = await fetch(`${apiBaseUrl}}/api/my-business/`, {
+        const res = await fetch(`${apiBaseUrl}}/my-business/`, {
           method: 'GET',
           headers: {
             'Accept': 'application/json',

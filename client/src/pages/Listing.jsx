@@ -11,7 +11,7 @@ const Listing = () => {
   useEffect(() => {
     const fetchBusinesses = async () => {
       try {
-        const res = await fetch(`${apiBaseUrl}/api/businesses/`);
+        const res = await fetch(`${apiBaseUrl}/businesses/`);
         const data = await res.json();
         setBusinesses(data);
       } catch (error) {

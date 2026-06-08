@@ -17,7 +17,7 @@ const Homepage = () => {
   useEffect(() => {
     const loadAllBusinesses = async () => {
       try {
-        const res = await fetch(`${apiBaseUrl}/api/businesses/`)
+        const res = await fetch(`${apiBaseUrl}/businesses/`)
         const data = await res.json()
         setAllBusinesses(data)
       } catch (error) {
@@ -32,7 +32,7 @@ const Homepage = () => {
   useEffect(() => {
     const loadTopBusinesses = async () => {
       try {
-        const res = await fetch(`${apiBaseUrl}/api/businesses/top-rated/`)
+        const res = await fetch(`${apiBaseUrl}/businesses/top-rated/`)
         const data = await res.json()
         setTopBusinesses(data)
       } catch (error) {

@@ -20,7 +20,7 @@ const BusinessDetails = () => {
   const fetchBusiness = async () => {
     setLoading(true)
     try {
-      const res = await fetch(`${apiBaseUrl}}/api/businesses/${id}/`)
+      const res = await fetch(`${apiBaseUrl}}/businesses/${id}/`)
       const data = await res.json()
       setBusiness(data)
     } catch (error) {
@@ -60,7 +60,7 @@ const BusinessDetails = () => {
     setSubmitting(true)
 
     try {
-      const response = await fetch(`${apiBaseUrl}/api/reviews/`, {
+      const response = await fetch(`${apiBaseUrl}/reviews/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

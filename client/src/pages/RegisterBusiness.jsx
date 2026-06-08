@@ -25,7 +25,7 @@ const RegisterBusiness = () => {
   useEffect(() => {
     const fetchCSRFToken = async () => {
       try {
-        await fetch(`${apiBaseUrl}/api/businesses/`, {
+        await fetch(`${apiBaseUrl}/businesses/`, {
           method: 'GET',
           credentials: 'include',
         })
