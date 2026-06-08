@@ -1,0 +1,178 @@
+[
+  {
+    "model": "app.business",
+    "pk": 1,
+    "fields": {
+      "name": "Amina Tailor House",
+      "category": "Tailoring",
+      "location": "Ikeja, Lagos",
+      "description": "Custom sewing and alteration services for modern outfits.",
+      "detailed_description": "Professional tailoring for men and women, including bespoke shirts, agbada, and evening wear. Fast alterations and custom fittings.",
+      "phone": "+2348030000001",
+      "email": "amina@tailorhouse.ng",
+      "instagram_handle": "aminatailorhouse",
+      "twitter_handle": "amina_tailor",
+      "facebook_handle": "AminaTailorHouse",
+      "whatsapp_number": "+2348030000001",
+      "owner": 1,
+      "is_verified": true,
+      "lat": "6.605000",
+      "lng": "3.349000",
+      "image": null
+    }
+  },
+  {
+    "model": "app.business",
+    "pk": 2,
+    "fields": {
+      "name": "Comfort Craft Furniture",
+      "category": "Furniture",
+      "location": "Yaba, Lagos",
+      "description": "Modern and custom furniture for home and office.",
+      "detailed_description": "Handcrafted chairs, tables, sofas and storage solutions built to order with quality materials and fast delivery.",
+      "phone": "+2348030000002",
+      "email": "hello@comfortcraft.ng",
+      "instagram_handle": "comfortcraftfurniture",
+      "twitter_handle": "comfort_furn",
+      "facebook_handle": "ComfortCraftFurniture",
+      "whatsapp_number": "+2348030000002",
+      "owner": 2,
+      "is_verified": true,
+      "lat": "6.515000",
+      "lng": "3.383000",
+      "image": null
+    }
+  },
+  {
+    "model": "app.business",
+    "pk": 3,
+    "fields": {
+      "name": "PixelFrame Photography",
+      "category": "Photography",
+      "location": "Victoria Island, Lagos",
+      "description": "Event and portraits photography for weddings, brands, and family sessions.",
+      "detailed_description": "Experienced photographers offering creative shoots, editing, studio rental, and digital delivery.",
+      "phone": "+2348030000003",
+      "email": "book@pixelframe.ng",
+      "instagram_handle": "pixelframephoto",
+      "twitter_handle": "pixelframephoto",
+      "facebook_handle": "PixelFramePhotography",
+      "whatsapp_number": "+2348030000003",
+      "owner": 3,
+      "is_verified": false,
+      "lat": "6.427000",
+      "lng": "3.421000",
+      "image": null
+    }
+  },
+  {
+    "model": "app.business",
+    "pk": 4,
+    "fields": {
+      "name": "Glow Beauty Studio",
+      "category": "Beauty",
+      "location": "Ikeja GRA, Lagos",
+      "description": "Beauty treatments, hair styling, skincare, and makeup.",
+      "detailed_description": "A high-end salon offering hair styling, facials, manicures, and bridal beauty packages in a calm studio setting.",
+      "phone": "+2348030000004",
+      "email": "glow@beautystudio.ng",
+      "instagram_handle": "glowbeautystudio",
+      "twitter_handle": "glow_beauty",
+      "facebook_handle": "GlowBeautyStudio",
+      "whatsapp_number": "+2348030000004",
+      "owner": 4,
+      "is_verified": true,
+      "lat": "6.584000",
+      "lng": "3.344000",
+      "image": null
+    }
+  },
+  {
+    "model": "app.business",
+    "pk": 5,
+    "fields": {
+      "name": "FixIT Tech Repair",
+      "category": "Tech repair",
+      "location": "Garki, Abuja",
+      "description": "Phone, laptop and tablet repair with fast turnaround.",
+      "detailed_description": "Device diagnosis, screen replacement, battery service, software support, and data recovery for all major brands.",
+      "phone": "+2348030000005",
+      "email": "support@fixitng.ng",
+      "instagram_handle": "fixittechrepair",
+      "twitter_handle": "fixit_tech",
+      "facebook_handle": "FixITTechRepair",
+      "whatsapp_number": "+2348030000005",
+      "owner": 5,
+      "is_verified": true,
+      "lat": "9.065000",
+      "lng": "7.473000",
+      "image": null
+    }
+  },
+  {
+    "model": "app.business",
+    "pk": 6,
+    "fields": {
+      "name": "Sweet Crust Bakery",
+      "category": "Baking",
+      "location": "Surulere, Lagos",
+      "description": "Cakes, pastries and baked goods made fresh daily.",
+      "detailed_description": "Custom celebration cakes, bread, cookies, and dessert boxes made from scratch with local ingredients.",
+      "phone": "+2348030000006",
+      "email": "orders@sweetcrust.ng",
+      "instagram_handle": "sweetcrustbakery",
+      "twitter_handle": "sweetcrust_bake",
+      "facebook_handle": "SweetCrustBakery",
+      "whatsapp_number": "+2348030000006",
+      "owner": 6,
+      "is_verified": false,
+      "lat": "6.476000",
+      "lng": "3.362000",
+      "image": null
+    }
+  },
+  {
+    "model": "app.business",
+    "pk": 7,
+    "fields": {
+      "name": "Canvas & Color Art Studio",
+      "category": "Art",
+      "location": "Lekki Phase 1, Lagos",
+      "description": "Paintings, prints, and art classes for beginners.",
+      "detailed_description": "Creative studio offering original artwork, commissions, and weekend art workshops for adults and children.",
+      "phone": "+2348030000007",
+      "email": "hello@canvascolor.ng",
+      "instagram_handle": "canvascolorart",
+      "twitter_handle": "canvas_color",
+      "facebook_handle": "CanvasColorArtStudio",
+      "whatsapp_number": "+2348030000007",
+      "owner": 7,
+      "is_verified": true,
+      "lat": "6.450000",
+      "lng": "3.577000",
+      "image": null
+    }
+  },
+  {
+    "model": "app.business",
+    "pk": 8,
+    "fields": {
+      "name": "Naija Catering Co.",
+      "category": "Catering",
+      "location": "Victoria Island, Lagos",
+      "description": "Event catering for parties, weddings, and corporate events.",
+      "detailed_description": "Customized menus, buffet service, and full event catering with local and international dishes.",
+      "phone": "+2348030000008",
+      "email": "events@naijacatering.ng",
+      "instagram_handle": "naijacateringco",
+      "twitter_handle": "naija_catering",
+      "facebook_handle": "NaijaCateringCo",
+      "whatsapp_number": "+2348030000008",
+      "owner": 8,
+      "is_verified": true,
+      "lat": "6.434000",
+      "lng": "3.421000",
+      "image": null
+    }
+  }
+]
