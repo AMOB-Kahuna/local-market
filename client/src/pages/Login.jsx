@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import Button from "../components/Button"
 
@@ -86,7 +86,7 @@ const Login = () => {
         </form>
 
         <p className="text-center mt-4">
-          Don't have an account? <a href="/signup" className="text-blue-600 hover:underline">Sign up</a>
+          Don't have an account? <Link to="/signup" className="text-blue-600 hover:underline">Sign up</Link>
         </p>
       </div>
     </div>
