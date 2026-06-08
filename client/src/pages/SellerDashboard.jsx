@@ -7,6 +7,8 @@ const SellerDashboard = () => {
   const [error, setError] = useState(null)
   const token = localStorage.getItem('accessToken')
 
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
+
 
   useEffect(() => {
     const fetchBusiness = async () => {
@@ -17,7 +19,7 @@ const SellerDashboard = () => {
       }
 
       try {
-        const res = await fetch('http://127.0.0.1:8000/api/my-business/', {
+        const res = await fetch(`${apiBaseUrl}}/api/my-business/`, {
           method: 'GET',
           headers: {
             'Accept': 'application/json',

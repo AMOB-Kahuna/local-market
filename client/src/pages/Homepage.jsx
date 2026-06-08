@@ -11,11 +11,13 @@ const Homepage = () => {
   const [isSearching, setIsSearching] = useState(false)
   const [allBusinesses, setAllBusinesses] = useState([])
 
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
+
   // Fetch all businesses on mount
   useEffect(() => {
     const loadAllBusinesses = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:8000/api/businesses/')
+        const res = await fetch(`${apiBaseUrl}/api/businesses/`)
         const data = await res.json()
         setAllBusinesses(data)
       } catch (error) {
@@ -30,7 +32,7 @@ const Homepage = () => {
   useEffect(() => {
     const loadTopBusinesses = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:8000/api/businesses/top-rated/')
+        const res = await fetch(`${apiBaseUrl}/api/businesses/top-rated/`)
         const data = await res.json()
         setTopBusinesses(data)
       } catch (error) {

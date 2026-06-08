@@ -15,10 +15,12 @@ const BusinessDetails = () => {
   // console.log(business)
   // console.log(currentUser)
 
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
+
   const fetchBusiness = async () => {
     setLoading(true)
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/businesses/${id}/`)
+      const res = await fetch(`${apiBaseUrl}}/api/businesses/${id}/`)
       const data = await res.json()
       setBusiness(data)
     } catch (error) {
@@ -58,7 +60,7 @@ const BusinessDetails = () => {
     setSubmitting(true)
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/reviews/', {
+      const response = await fetch(`${apiBaseUrl}/api/reviews/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

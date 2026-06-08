@@ -19,11 +19,13 @@ const RegisterBusiness = () => {
   const [submitSuccess, setSubmitSuccess] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
+
   // Add this useEffect to fetch the CSRF token on mount
   useEffect(() => {
     const fetchCSRFToken = async () => {
       try {
-        await fetch('http://127.0.0.1:8000/api/businesses/', {
+        await fetch(`${apiBaseUrl}/api/businesses/`, {
           method: 'GET',
           credentials: 'include',
         })
@@ -71,7 +73,7 @@ const RegisterBusiness = () => {
     const token = localStorage.getItem('accessToken')
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/businesses/', {
+      const response = await fetch(`${apiBaseUrl}/api/businesses/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

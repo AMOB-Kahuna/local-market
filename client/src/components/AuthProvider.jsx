@@ -10,9 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  // console.log(user)
-
-  const API_BASE = 'http://127.0.0.1:8000/api'
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
 
   const saveAuthData = ({ user, accessToken, refreshToken }) => {
     localStorage.setItem('user', JSON.stringify(user))
@@ -25,7 +23,7 @@ export const AuthProvider = ({ children }) => {
     setError(null)
 
     try {
-      const registerRes = await fetch(`${API_BASE}/register/`, {
+      const registerRes = await fetch(`${apiBaseUrl}/register/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password })
@@ -41,7 +39,7 @@ export const AuthProvider = ({ children }) => {
         )
       }
 
-      const tokenRes = await fetch(`${API_BASE}/token/`, {
+      const tokenRes = await fetch(`${apiBaseUrl}/token/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: email, password })
@@ -73,7 +71,7 @@ export const AuthProvider = ({ children }) => {
     setError(null)
 
     try {
-      const tokenRes = await fetch(`${API_BASE}/token/`, {
+      const tokenRes = await fetch(`${apiBaseUrl}/token/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: email, password })
@@ -84,8 +82,7 @@ export const AuthProvider = ({ children }) => {
         throw new Error(tokenData.detail || 'Login failed')
       }
 
-      // Optional: fetch user profile from backend
-      const profileRes = await fetch(`${API_BASE}/login/`, {
+      const profileRes = await fetch(`${apiBaseUrl}/login/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -123,7 +120,7 @@ export const AuthProvider = ({ children }) => {
     const refreshToken = localStorage.getItem('refreshToken')
     if (!refreshToken) throw new Error('No refresh token')
 
-    const res = await fetch(`${API_BASE}/token/refresh/`, {
+    const res = await fetch(`${apiBaseUrl}/token/refresh/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ refresh: refreshToken }),

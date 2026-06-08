@@ -6,10 +6,12 @@ const Listing = () => {
   const [businesses, setBusinesses] = useState([])
   const [selectedCategory, setSelectedCategory] = useState(null)
 
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   useEffect(() => {
     const fetchBusinesses = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:8000/api/businesses/');
+        const res = await fetch(`${apiBaseUrl}/api/businesses/`);
         const data = await res.json();
         setBusinesses(data);
       } catch (error) {
