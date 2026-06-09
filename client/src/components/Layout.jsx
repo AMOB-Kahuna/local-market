@@ -1,15 +1,22 @@
 // import React from 'react'
 import { useState } from 'react'
-import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { NavLink, Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 
 const Layout = () => {
 
-  const [showNav, setShowNav] = useState(false)
-  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
   const navigate = useNavigate()
   const { user, logout } = useAuth()
   const location = useLocation()
+
+  const [showNav, setShowNav] = useState(false)
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  // console.log(location.pathname)
+  // console.log(searchParams)
+  const isListingsPage = location.pathname === '/listings'
+  const viewMode = searchParams.get('view') || 'list'
 
   const handleLogout = () => {
     logout()
@@ -18,19 +25,45 @@ const Layout = () => {
     navigate('/')
   }
 
+  const toggleView = () => {
+    const next = viewMode === 'map' ? 'list' : 'map'
+    setSearchParams({ view: next })
+  }
+
   return (
     <>
       <header className='px-3 py-4 border-b border-b-[#F0A500] flex justify-between items-center lg:px-10'>
         <h1 className='text-[#5C3317] font-[Abril_Fatface] font-bold text-2xl'>LocalMarket</h1>
 
-        <button
-          className='w-10 sm:hidden'
-          onClick={() => setShowNav(prev => !prev)}
-        >
-          <img src="/menu.png" alt="" className='w-full' />
-        </button>
+        <div className='flex justify-center gap-7'>
+          {isListingsPage &&
+            <button
+              className='w-8 sm:hidden cursor-pointer'
+              onClick={toggleView}
+            >
+              {
+                viewMode === 'map' ?
+                <img src="/map-on.png" alt="" className='w-full' /> :
+                <img src="/map-off.png" alt="" className='w-full' />
+              }
+            </button>
+          }
+
+          <button
+            className='w-10 sm:hidden cursor-pointer'
+            onClick={() => setShowNav(prev => !prev)}
+          >
+            <img src="/menu.png" alt="" className='w-full' />
+          </button>
+        </div>
         
-        <nav className={`${showNav ? 'absolute top-0 right-0 mt-20 bg-[#FFFDF5] py-5 px-10  flex-col gap-5 shadow-md' : ''} text-xl flex gap-5`}>
+        <nav
+          className={`
+            absolute top-16 right-3 z-40 flex-col gap-4 rounded-xl bg-[#FFFDF5] p-5 shadow-md
+            ${showNav ? 'flex' : 'hidden'}
+            sm:static sm:flex sm:flex-row sm:items-center sm:gap-5 sm:p-0 sm:shadow-none text-xl
+          `}
+        >
           <button onClick={() => setShowNav(false)}>
             <NavLink to="/">Home</NavLink>
           </button>
@@ -49,12 +82,14 @@ const Layout = () => {
               <button onClick={() => setShowNav(false)}>
                   <NavLink to="/mybusiness">Dashboard</NavLink>
                 </button>
-              <button className='cursor-pointer' onClick={() => setShowLogoutConfirm(true)}>Logout</button>
+              <button className="cursor-pointer" onClick={() => setShowLogoutConfirm(true)}>
+                Logout
+              </button>
             </>
           ) : (
             <>
               <button onClick={() => setShowNav(false)}>
-                <NavLink to="/login" state={{from: location}}>Login</NavLink>
+                <NavLink to="/login" state={{ from: location }}>Login</NavLink>
               </button>
               <button onClick={() => setShowNav(false)}>
                 <NavLink to="/signup">Sign Up</NavLink>

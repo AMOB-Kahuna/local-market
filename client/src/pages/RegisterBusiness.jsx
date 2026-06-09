@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import Button from "../components/Button"
+import { MapContainer, TileLayer } from 'react-leaflet'
+import "leaflet/dist/leaflet.css"
 
 const RegisterBusiness = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +22,7 @@ const RegisterBusiness = () => {
   const [submitting, setSubmitting] = useState(false)
 
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
+  const position = [51.505, -0.09]
 
   // Add this useEffect to fetch the CSRF token on mount
   useEffect(() => {
@@ -73,7 +76,7 @@ const RegisterBusiness = () => {
     const token = localStorage.getItem('accessToken')
 
     try {
-      const response = await fetch(`${apiBaseUrl}/api/businesses/`, {
+      const response = await fetch(`${apiBaseUrl}/businesses/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -293,6 +296,13 @@ const RegisterBusiness = () => {
               onChange={handleChange}
             />
           </div>
+
+          <MapContainer center={position} zoom={13}>
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+          </MapContainer>
 
           <div className="text-center">
             <Button text="Register Business" onClick={handleSubmit} />

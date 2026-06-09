@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react'
 import List from '../components/List'
 import { categories } from '../categories'
+import { useSearchParams } from 'react-router-dom'
 
 const Listing = () => {
+  const [searchParams] = useSearchParams()
+
   const [businesses, setBusinesses] = useState([])
   const [selectedCategory, setSelectedCategory] = useState(null)
 
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+  const viewMode = searchParams.get('view') || 'list'
 
   useEffect(() => {
     const fetchBusinesses = async () => {
@@ -58,30 +62,34 @@ const Listing = () => {
         ))}
       </div>
 
-      <div className='grid gap-8 md:grid-cols-2 lg:grid-cols-3'>
-        {filteredBusinesses.map(({
-          id,
-          name,
-          category,
-          location,
-          description,
-          status,
-          image,
-          average_rating,
-        }) => {
-          return (<List
-            key={id}
-            id={id}
-            name={name}
-            category={category}
-            location={location}
-            rating={average_rating}
-            description={description}
-            status={status}
-            image={image}
-          />)
-        })}
-      </div>
+      {
+        viewMode === 'map' ?
+        '' :
+        <div className='grid gap-8 md:grid-cols-2 lg:grid-cols-3'>
+          {filteredBusinesses.map(({
+            id,
+            name,
+            category,
+            location,
+            description,
+            status,
+            image,
+            average_rating,
+          }) => {
+            return (<List
+              key={id}
+              id={id}
+              name={name}
+              category={category}
+              location={location}
+              rating={average_rating}
+              description={description}
+              status={status}
+              image={image}
+            />)
+          })}
+        </div>
+      }
     </div>
   )
 }
