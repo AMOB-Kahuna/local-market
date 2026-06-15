@@ -59,7 +59,7 @@ const Layout = () => {
         
         <nav
           className={`
-            absolute top-16 right-3 z-40 flex-col gap-4 rounded-xl bg-[#FFFDF5] p-5 shadow-md
+            absolute top-16 right-3 z-40 w-50 flex-col gap-4 rounded-xl bg-[#FFFDF5] p-5 shadow-md
             ${showNav ? 'flex' : 'hidden'}
             sm:static sm:flex sm:flex-row sm:items-center sm:gap-5 sm:p-0 sm:shadow-none text-xl
           `}

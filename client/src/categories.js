@@ -16,7 +16,7 @@ export const categories = [
     img: "/salon.png"
   },
   {
-    name: "Tech repair",
+    name: "Tech Repair",
     img: "/tv.png"
   },
   {
