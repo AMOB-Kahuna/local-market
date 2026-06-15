@@ -20,7 +20,7 @@ const BusinessDetails = () => {
   const fetchBusiness = async () => {
     setLoading(true)
     try {
-      const res = await fetch(`${apiBaseUrl}}/businesses/${id}/`)
+      const res = await fetch(`${apiBaseUrl}/businesses/${id}/`)
       const data = await res.json()
       setBusiness(data)
     } catch (error) {

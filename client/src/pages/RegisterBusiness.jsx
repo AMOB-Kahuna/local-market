@@ -1,7 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Button from "../components/Button"
+import { MapContainer, Marker, TileLayer } from 'react-leaflet'
+import "leaflet/dist/leaflet.css"
 
 const RegisterBusiness = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
+
   const [formData, setFormData] = useState({
     name: '',
     category: '',
@@ -13,38 +17,42 @@ const RegisterBusiness = () => {
     instagram_handle: '',
     facebook_handle: '',
     whatsapp_number: '',
-    detailed_description: ''
+    detailed_description: '',
+    lat: '',
+    lng: '',
+    image: '',
   })
+  // console.log(formData);
   const [submitError, setSubmitError] = useState('')
   const [submitSuccess, setSubmitSuccess] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  // const [mapCenter, setMapCenter] = useState([7.5283, 3.91156])
+  // const [markerPosition, setMarkerPosition] = useState(
+  //   mapCenter ||
+  //   (formData.lat && formData.lng
+  //     && [Number(formData.lat), Number(formData.lng)]
+  //   )
+  // )
 
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
+  const mapRef = useRef(null)
 
-  // Add this useEffect to fetch the CSRF token on mount
+
   useEffect(() => {
-    const fetchCSRFToken = async () => {
-      try {
-        await fetch(`${apiBaseUrl}/businesses/`, {
-          method: 'GET',
-          credentials: 'include',
-        })
-        // This GET request triggers Django to set the csrftoken cookie
-      } catch (err) {
-        console.error('Failed to fetch CSRF token:', err)
-      }
-    }
-    
-    fetchCSRFToken()
-  }, [])
+    if (!submitError && !submitSuccess) return
+
+    const timer = setTimeout(() => {
+      setSubmitError('')
+      setSubmitSuccess('')
+    }, 2000)
+
+    return () => clearTimeout(timer)
+  }, [submitError, submitSuccess])
 
   const handleChange = (e) => {
-    const { id, value, name } = e.target
+    const { id, value, name, files } = e.target
     const fieldName = id || name
-    setFormData(prev => ({
-      ...prev,
-      [fieldName]: value
-    }))
+    if (files) setFormData(prev => ({ ...prev, [fieldName]: files[0] }))
+    else setFormData(prev => ({ ...prev, [fieldName]: value }))
   }
 
   const handleSubmit = async (e) => {
@@ -72,20 +80,28 @@ const RegisterBusiness = () => {
 
     const token = localStorage.getItem('accessToken')
 
+    const formDataToSend = new FormData()
+
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value === null || value === undefined) return
+      if (typeof value === 'string') {
+        if (value.trim() !== '') formDataToSend.append(key, value.trim())
+        return
+      }
+      formDataToSend.append(key, value)
+    })
+
     try {
-      const response = await fetch(`${apiBaseUrl}/api/businesses/`, {
+      const response = await fetch(`${apiBaseUrl}/businesses/`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'Accept': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: formDataToSend,
       })
 
       const data = await response.json()
-      // console.log('Response Status:', response.status)
-      // console.log('Response Data:', data)
 
       if (!response.ok) {
         const message =
@@ -108,12 +124,52 @@ const RegisterBusiness = () => {
         facebook_handle: '',
         whatsapp_number: '',
         detailed_description: '',
+        lat: '',
+        lng: '',
+        image: '',
       })
     } catch (err) {
       setSubmitError(err.message)
     } finally {
       setSubmitting(false)
     }
+  }
+
+  const getCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      setSubmitError('Geolocation is not supported by this browser.')
+      return
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const latitude = position.coords.latitude
+        const longitude = position.coords.longitude
+        console.log(position)
+
+        // const nextPosition = [latitude, longitude]
+        // console.log(nextPosition)
+
+        setFormData((prev) => ({
+          ...prev,
+          lat: latitude,
+          lng: longitude,
+        }))
+
+        // setMapCenter(nextPosition)
+        // setMarkerPosition(nextPosition)
+        setSubmitSuccess('Your location has been captured.')
+      },
+      (error) => {
+        console.error(error)
+        setSubmitError('Could not get your location.')
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      }
+    )
   }
 
   return (
@@ -123,7 +179,7 @@ const RegisterBusiness = () => {
           Register Your Business
         </h1>
 
-        <form className="space-y-6" onSubmit={handleSubmit}>
+        <form className="space-y-6" onSubmit={handleSubmit} encType="multipart/form-data">
           <fieldset className="border border-gray-200 rounded-3xl p-6">
             <legend className="text-xl font-semibold px-2">Basic Info.</legend>
 
@@ -207,7 +263,9 @@ const RegisterBusiness = () => {
                 />
               </div>
 
-              <div className="flex flex-col">
+              <div className="flex<Marker>
+
+            </Marker> flex-col">
                 <label htmlFor="email" className="text-lg font-bold mb-2">
                   Email:
                 </label>
@@ -281,6 +339,11 @@ const RegisterBusiness = () => {
             </div>
           </fieldset>
 
+          <div>
+            <label className="text-lg font-bold mb-1 block">Image</label>
+            <input type="file" name="image" className='w-full border border-gray-300 px-3 py-2 cursor-pointer' onChange={handleChange} />
+          </div>
+
           <div className="flex flex-col">
             <label htmlFor="detailed_description" className="text-lg font-bold mb-2">
               About Business:
@@ -288,11 +351,29 @@ const RegisterBusiness = () => {
             <textarea
               id="detailed_description"
               required
-              className="border border-gray-300 px-3 py-2 rounded min-h-[140px]"
+              className="border border-gray-300 px-3 py-2 rounded min-h-35"
               value={formData.detailed_description}
               onChange={handleChange}
             />
           </div>
+
+          <div className="text-center">
+            <button
+              type="button"
+              onClick={getCurrentLocation}
+              className="mt-2 rounded-xl bg-[#F0A500] px-4 py-2 text-white"
+            >
+              Use my current location
+            </button>
+          </div>
+
+          {/* <MapContainer center={mapCenter && mapCenter} zoom={16} whenReady={ (map) => mapRef.current = map}>
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker position={markerPosition}></Marker>
+          </MapContainer> */}
 
           <div className="text-center">
             <Button text="Register Business" onClick={handleSubmit} />
@@ -300,13 +381,13 @@ const RegisterBusiness = () => {
         </form>
 
         {submitError && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          <div className="w-fit bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 fixed top-0 left-0 right-0 mt-5 mx-auto">
             {submitError}
           </div>
         )}
 
         {submitSuccess && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+          <div className="w-fit bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 fixed top-0 left-0 right-0 mt-5 mx-auto">
             {submitSuccess}
           </div>
         )}
