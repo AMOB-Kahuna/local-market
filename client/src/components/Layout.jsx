@@ -61,7 +61,7 @@ const Layout = () => {
           className={`
             absolute top-16 right-3 z-40 w-50 flex-col gap-4 rounded-xl bg-[#FFFDF5] p-5 shadow-md
             ${showNav ? 'flex' : 'hidden'}
-            sm:static sm:flex sm:flex-row sm:gap-5 sm:shadow-none text-xl
+            sm:flex sm:flex-row sm:gap-5 sm:shadow-none text-xl
           `}
         >
           <button onClick={() => setShowNav(false)}>
