@@ -59,8 +59,8 @@ const Layout = () => {
         
         <nav
           className={`
-            ${showNav ? 'absolute top-16 right-3 z-40 w-50 flex-col gap-4 rounded-xl bg-[#FFFDF5] p-5 shadow-md' : 'hidden sm:flex'}
-            text-xl
+            ${showNav ? 'absolute top-16 right-3 z-40 w-50 flex-col rounded-xl bg-[#FFFDF5] p-5 shadow-md' : 'hidden sm:flex'}
+            text-xl gap-5
           `}
         >
           <button onClick={() => setShowNav(false)}>
