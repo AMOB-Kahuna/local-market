@@ -38,7 +38,7 @@ const Layout = () => {
         <div className='flex justify-center gap-7'>
           {isListingsPage &&
             <button
-              className='w-8 sm:hidden cursor-pointer'
+              className='w-8 cursor-pointer'
               onClick={toggleView}
             >
               {
