@@ -76,4 +76,6 @@ A platform connecting local businesses with customers in their area. Browse busi
 - Backend: `python manage.py runserver`
 - Frontend: `npm run dev`
 
----
+-------
+## Demo
+
